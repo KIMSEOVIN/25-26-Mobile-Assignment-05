@@ -1,50 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react'; // <-- 1. useState를 import 합니다.
 import { 
-  View, 
-  StyleSheet, 
-  KeyboardAvoidingView, 
-  Platform, 
-  Pressable,
-  Keyboard 
+  View, 
+  StyleSheet, 
+  KeyboardAvoidingView, 
+  Platform, 
+  Pressable,
+  Keyboard,
+  Alert // <-- 4. 로그인 결과 알림을 위해 Alert를 import 합니다.
 } from 'react-native';
 import ImageComponent from '../components/ImageComponent';
-import InputComponent, { InputComponent2 } from '../components/TextInputComponent';
+import InputComponent from '../components/TextInputComponent'; // (InputComponent2는 아마 오타이신 듯)
 import ButtonComponent from '../components/ButtonComponent';
+import { login } from '../api/Auth'; // <-- 5. 저번에 만든 login 함수를 import 합니다.
 
 const SignInScreen = () => {
+  // 2. 이메일과 비밀번호를 저장할 '상태(state)' 2개를 만듭니다.
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+
+  // 6. 로그인 버튼 클릭 시 실행될 함수 (과제 2번 내용)
+  const handleLoginSubmit = () => {
+    console.log('로그인 시도:', email, password);
+
+    // email, password가 비어있는지 간단히 확인
+    if (!email || !password) {
+      Alert.alert('입력 오류', '이메일과 비밀번호를 모두 입력해주세요.');
+      return;
+    }
+
+    login(email, password)
+      .then((response) => {
+        // Promise가 resolve (성공) 되면 실행
+        Alert.alert('로그인 성공', response.message);
+        // TODO: 로그인 성공 시 다음 화면으로 이동하는 코드 (ex: navigation.navigate('Main'))
+      })
+      .catch((error) => {
+        // Promise가 reject (실패) 되면 실행
+        Alert.alert('로그인 실패', error.message);
+      });
+  };
+ const isDisabled = !email || !password;
+
   return (
     <KeyboardAvoidingView
-      style={{flex: 1}} // 화면 전체를 차지하도록
-      // iOS는 padding, 안드로이드는 height가 좀 더 자연스럽습니다.
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+       style={{flex: 1}}
+       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
     >
-      {/* 2. Pressable이 컨테이너 역할을 하며, 
-           onPress로 키보드를 닫는 기능을 가집니다.
-      */}
       <Pressable 
-        style={styles.container} // 기존 스타일을 여기에 적용
-        onPress={() => Keyboard.dismiss()}
+         style={styles.container}
+         onPress={() => Keyboard.dismiss()}
       >
-        {/* 모든 UI 컴포넌트를 Pressable 안에 배치 */}
         <ImageComponent /> 
-
-
         <InputComponent 
           labelName2="이메일"
           iconName="mail" 
           placeholder="이메일" 
           isPassword={false}
+          value={email}
+          onChangeText={setEmail}
         />
-
         <InputComponent
           labelName2="비밀번호"
           iconName="lock"
           placeholder="비밀번호" 
           isPassword={true} 
+          value={password}
+          onChangeText={setPassword}
         />
-
-        <ButtonComponent text="로그인" />
-
+        <ButtonComponent 
+          text="로그인" 
+          onPress={handleLoginSubmit}
+          disabled={isDisabled}
+        />
       </Pressable>
     </KeyboardAvoidingView>
   );
@@ -60,6 +88,3 @@ const styles = StyleSheet.create({
 });
 
 export default SignInScreen;
-
-//TextInputComponent에다가
-//

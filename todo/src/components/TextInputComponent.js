@@ -1,54 +1,45 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React from 'react';
-import { View, TextInput, StyleSheet,Text } from 'react-native';
+import { View, TextInput, StyleSheet, Text } from 'react-native';
 
-const InputComponent = ({ labelName2, iconName, placeholder, isPassword }) => {
+// <-- 1. props 목록에 value와 onChangeText를 추가합니다.
+const InputComponent = ({ 
+  labelName2, 
+  iconName, 
+  placeholder, 
+  isPassword,
+  value, 
+  onChangeText 
+}) => {
   return (
     <View >
       <Text>{labelName2}</Text>
     
-    <View style={styles.container}>
- 
-      <View style={styles.iconContainer}>
-        
-        <MaterialIcons name={iconName} size={20} color='gray' />
+      <View style={styles.container}>
+  
+        <View style={styles.iconContainer}>
+          <MaterialIcons name={iconName} size={20} color='gray' />
+        </View>
 
+        <TextInput 
+          style={styles.input}
+          placeholder={placeholder} 
+          secureTextEntry={isPassword}
+          // --- 2. 전달받은 props를 TextInput에 연결합니다. ---
+          value={value}                 // <-- 2-a.
+          onChangeText={onChangeText}   // <-- 2-b.
+          // ------------------------------------------------
+        />
       </View>
-
-
-      <TextInput 
-        style={styles.input}
-        placeholder={placeholder} 
-        secureTextEntry={isPassword}
-      />
-    </View>
     </View>
   );
 };
 
-// export const InputComponent2 = ({ placeholder, isPassword }) => {
-//   return (
-//     <View style={styles.container}>
-//       {/* 아이콘을 담는 View */}
-//       <View style={styles.iconContainer}>
-//         <MaterialIcons name="lock" size={20} color='gray' />
-//       </View>
-
-//       <TextInput 
-//         style={styles.input}
-//         placeholder={placeholder} 
-//         secureTextEntry={isPassword}
-//       />
-//     </View>
-//   );
-// };
-
-// 3. 스타일 (두 컴포넌트가 공통으로 사용)
+// ... (InputComponent2 및 styles는 동일) ...
 const styles = StyleSheet.create({
   container3:{
     flexDirection:'column'
   },
-
   container: {
     flexDirection: 'row', 
     alignItems: 'center', 
@@ -56,8 +47,8 @@ const styles = StyleSheet.create({
     marginBottom: 15, 
   },
   iconContainer: {
-    position: 'absolute', // input 위에 띄우기
-    left: 10,             // 왼쪽에서 10px 띄우기
+    position: 'absolute',
+    left: 10,
   },
   input: {
     flex: 1, 
@@ -65,11 +56,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
-    paddingLeft: 40,      // 아이콘이 들어갈 공간 확보
+    paddingLeft: 40,
     paddingRight: 15, 
   }
 });
 
 export default InputComponent;
-
-//proptypes 명시하기
