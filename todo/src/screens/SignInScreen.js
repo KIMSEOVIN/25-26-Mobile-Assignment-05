@@ -6,24 +6,24 @@ import {
   Platform, 
   Pressable,
   Keyboard,
-  Alert // <-- 4. 로그인 결과 알림을 위해 Alert를 import 합니다.
+  Alert //로그인알림 함수
 } from 'react-native';
 import ImageComponent from '../components/ImageComponent';
-import InputComponent from '../components/TextInputComponent'; // (InputComponent2는 아마 오타이신 듯)
+import InputComponent from '../components/TextInputComponent'; 
 import ButtonComponent from '../components/ButtonComponent';
-import { login } from '../api/Auth'; // <-- 5. 저번에 만든 login 함수를 import 합니다.
+import { login } from '../api/Auth'; 
 
 const SignInScreen = () => {
-  // 2. 이메일과 비밀번호를 저장할 '상태(state)' 2개를 만듭니다.
+  // 이메일 패스워드 저장하기
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
 
-  // 6. 로그인 버튼 클릭 시 실행될 함수 (과제 2번 내용)
+  // 로그인버튼 클릭시 일어나는 함수
   const handleLoginSubmit = () => {
     console.log('로그인 시도:', email, password);
 
-    // email, password가 비어있는지 간단히 확인
+    // 이메일이랑 패스워드 비어잇는지 알아보는함수
     if (!email || !password) {
       Alert.alert('입력 오류', '이메일과 비밀번호를 모두 입력해주세요.');
       return;
@@ -31,12 +31,12 @@ const SignInScreen = () => {
 
     login(email, password)
       .then((response) => {
-        // Promise가 resolve (성공) 되면 실행
+     
         Alert.alert('로그인 성공', response.message);
-        // TODO: 로그인 성공 시 다음 화면으로 이동하는 코드 (ex: navigation.navigate('Main'))
+  
       })
       .catch((error) => {
-        // Promise가 reject (실패) 되면 실행
+     
         Alert.alert('로그인 실패', error.message);
       });
   };

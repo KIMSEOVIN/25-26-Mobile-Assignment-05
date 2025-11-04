@@ -10,7 +10,7 @@ export const login = (email, password) => {
           success: true,
           userId: 1,
           email: email,
-          message: '로그인 성공!',
+          message: '환영합니다',
         });
       } else {
        
